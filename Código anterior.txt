@@ -1,0 +1,22 @@
+# Conexão com o Banco de dados
+
+database = 'db-estudos'
+username = 'admin-azure'
+password = 'a&Ehs&HB'
+server = 'sql-estudo.database.windows.net'
+con = pymssql.connect (server, username, password, database)
+cursor = con.cursor()
+
+# Limpeza da tabela antes da inserção de dados
+
+com02 = """truncate table [dolar_marcus_araujo].[dolar_stage_marcus_araujo02]"""
+con.cursor().execute(com02)
+
+# Query para a inserção de dados da API para a tabela stage
+
+com = """INSERT INTO [dolar_marcus_araujo].[dolar_stage_marcus_araujo02] VALUES(%s, %s, %s);"""
+sql_data = tuple(map(tuple, df.values)) # Convertendo arrays em tuplas
+con.cursor().executemany(com, sql_data)
+con.commit()
+con.close()
+print('Dados inseridos corretamente na tabela stage')

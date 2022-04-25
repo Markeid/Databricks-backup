@@ -1,0 +1,34 @@
+#criando um schema
+
+CREATE SCHEMA dolar_marcus_araujo
+
+#criar tabelas utilizando dolar_marcus_araujo, pois conectará com o schema já criado
+
+#criando tabela Stage
+
+CREATE TABLE dolar_stage_marcus_araujo (cotacaoCompra varchar(100), cotacaoVenda varchar(100), dataHoraCotacao varchar(100))
+
+#criando tabela final
+
+CREATE TABLE dolar_final_marcus_araujo (cotacaoCompra float, cotacaoVenda float, dataHoraCotacao datetime)
+
+#criando uma procedure
+
+CREATE PROCEDURE dolar_marcus_araujo.dolar_procedure_marcus_araujo
+
+AS
+
+truncate table [dolar_marcus_araujo].[dolar_final_marcus_araujo]
+INSERT INTO [dolar_marcus_araujo].[dolar_final_marcus_araujo]
+select cast(replace(dmv.cotacaoCompra,',','.') AS FLOAT) as cotacaoCompra,
+cast(replace(dmv.cotacaoVenda,',','.') AS FLOAT) as cotacaoVenda,
+cast(dmv.dataHoraCotacao AS DATETIME) as dataHoraCompra
+from [dolar_marcus_araujo].[dolar_stage_marcus_araujo] as dmv
+
+
+truncate table [dolar_marcus_araujo].[dolar_stage_marcus_araujo]
+
+#remover procedure do Azuresql
+
+DROP PROCEDURE [dolar_marcus_araujo].[dolar_procedure_marcus_araujo02];
+GO
